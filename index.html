@@ -3,8 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💚</title>
+    <title>みんなの掲示板 💚</title>
     <style>
+        :root {
+            --theme: 'green';
+        }
+
+        /* グリーンテーマ（デフォルト） */
+        body.green-theme {
+            --bg-gradient: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 50%, #ffffff 100%);
+            --text-color: #2e7d32;
+            --primary-color: #66bb6a;
+            --secondary-color: #81c784;
+            --accent-color: #4caf50;
+            --border-color: #c8e6c9;
+            --input-bg: #f9fbe7;
+            --shadow-color: rgba(76, 175, 80, 0.15);
+            --btn-gradient: linear-gradient(135deg, #81c784 0%, #4caf50 100%);
+            --btn-hover-gradient: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);
+        }
+
+        /* ブラウンテーマ */
+        body.brown-theme {
+            --bg-gradient: linear-gradient(135deg, #fafafa 0%, #f5f5f5 50%, #ffffff 100%);
+            --text-color: #4e342e;
+            --primary-color: #6d4c41;
+            --secondary-color: #8d6e63;
+            --accent-color: #5d4037;
+            --border-color: #d7ccc8;
+            --input-bg: #fafafa;
+            --shadow-color: rgba(93, 64, 55, 0.12);
+            --btn-gradient: linear-gradient(135deg, #8d6e63 0%, #5d4037 100%);
+            --btn-hover-gradient: linear-gradient(135deg, #6d4c41 0%, #4e342e 100%);
+        }
+
+        /* ダークテーマ（高級感） */
+        body.dark-theme {
+            --bg-gradient: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+            --text-color: #e0e0e0;
+            --primary-color: #ffffff;
+            --secondary-color: #b0b0b0;
+            --accent-color: #ffffff;
+            --border-color: #333333;
+            --input-bg: #1a1a1a;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --btn-gradient: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+            --btn-hover-gradient: linear-gradient(135deg, #3a3a3a 0%, #2c2c2c 100%);
+            --post-bg: #151515;
+            --form-bg: linear-gradient(135deg, #1a1a1a 0%, #252525 100%);
+        }
+
+        body.dark-theme .post-form {
+            background: var(--form-bg);
+            border: 1px solid #444;
+        }
+
+        body.dark-theme .post {
+            background: var(--post-bg);
+            border: 1px solid #2a2a2a;
+        }
+
+        body.dark-theme .theme-toggle {
+            background: #1a1a1a;
+            border-color: #444;
+            color: #e0e0e0;
+        }
+
+        body.dark-theme input[type="text"],
+        body.dark-theme textarea {
+            background: #0a0a0a;
+            color: #e0e0e0;
+            border-color: #444;
+        }
+
+        body.dark-theme input[type="text"]:focus,
+        body.dark-theme textarea:focus {
+            background: #1a1a1a;
+            border-color: #666;
+        }
+
+        body.dark-theme .btn {
+            background: linear-gradient(135deg, #444 0%, #222 100%);
+            border: 1px solid #555;
+        }
+
+        body.dark-theme .btn:hover {
+            background: linear-gradient(135deg, #555 0%, #333 100%);
+            border: 1px solid #666;
+        }
+
+        body.dark-theme .post::before {
+            background: linear-gradient(180deg, #666 0%, #444 100%);
+        }
+
+        body.dark-theme h1 {
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+        }
+
+        body.dark-theme .empty-state {
+            color: #808080;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,10 +112,11 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 50%, #ffffff 100%);
+            background: var(--bg-gradient);
             min-height: 100vh;
             padding: 20px;
-            color: #2e7d32;
+            color: var(--text-color);
+            transition: all 0.3s ease;
         }
 
         .container {
@@ -28,30 +128,74 @@
             text-align: center;
             margin-bottom: 40px;
             animation: fadeInDown 0.8s ease;
+            position: relative;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 30px;
+            padding: 8px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px var(--shadow-color);
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px var(--shadow-color);
+        }
+
+        .theme-toggle span {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .theme-icon {
+            font-size: 1.2rem;
         }
 
         h1 {
-            color: #66bb6a;
+            color: var(--primary-color);
             font-size: 2.5rem;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(76, 175, 80, 0.2);
+            text-shadow: 2px 2px 4px var(--shadow-color);
             font-weight: bold;
         }
 
+        .heart-link {
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .heart-link:hover {
+            transform: scale(1.2) rotate(10deg);
+            filter: drop-shadow(0 0 10px rgba(102, 187, 106, 0.5));
+        }
+
         .subtitle {
-            color: #81c784;
+            color: var(--secondary-color);
             font-size: 1rem;
             font-weight: 500;
         }
 
         .post-form {
-            background: linear-gradient(135deg, #ffffff 0%, #f1f8e9 100%);
+            background: white;
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.15);
+            box-shadow: 0 10px 30px var(--shadow-color);
             margin-bottom: 30px;
             animation: fadeIn 1s ease;
-            border: 2px solid #c8e6c9;
+            border: 2px solid var(--border-color);
         }
 
         .form-group {
@@ -60,7 +204,7 @@
 
         label {
             display: block;
-            color: #4caf50;
+            color: var(--accent-color);
             font-weight: 600;
             margin-bottom: 8px;
             font-size: 0.9rem;
@@ -70,20 +214,20 @@
         textarea {
             width: 100%;
             padding: 12px 15px;
-            border: 2px solid #c8e6c9;
+            border: 2px solid var(--border-color);
             border-radius: 10px;
             font-size: 1rem;
             transition: all 0.3s ease;
-            background: #f9fbe7;
+            background: var(--input-bg);
         }
 
         input[type="text"]:focus,
         textarea:focus {
             outline: none;
-            border-color: #66bb6a;
+            border-color: var(--primary-color);
             background: white;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 187, 106, 0.3);
+            box-shadow: 0 5px 15px var(--shadow-color);
         }
 
         textarea {
@@ -93,7 +237,7 @@
         }
 
         .btn {
-            background: linear-gradient(135deg, #81c784 0%, #4caf50 100%);
+            background: var(--btn-gradient);
             color: white;
             border: none;
             padding: 12px 30px;
@@ -102,13 +246,13 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+            box-shadow: 0 4px 15px var(--shadow-color);
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.5);
-            background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);
+            box-shadow: 0 6px 20px var(--shadow-color);
+            background: var(--btn-hover-gradient);
         }
 
         .btn:active {
@@ -120,15 +264,15 @@
         }
 
         .post {
-            background: linear-gradient(135deg, #ffffff 0%, #f1f8e9 100%);
+            background: white;
             border-radius: 15px;
             padding: 25px;
             margin-bottom: 20px;
-            box-shadow: 0 5px 20px rgba(76, 175, 80, 0.1);
+            box-shadow: 0 5px 20px var(--shadow-color);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-            border: 1px solid #e8f5e9;
+            border: 1px solid var(--border-color);
         }
 
         .post::before {
@@ -138,13 +282,13 @@
             top: 0;
             width: 4px;
             height: 100%;
-            background: linear-gradient(180deg, #81c784 0%, #4caf50 100%);
+            background: var(--btn-gradient);
         }
 
         .post:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.15);
-            border-color: #c8e6c9;
+            box-shadow: 0 8px 25px var(--shadow-color);
+            border-color: var(--border-color);
         }
 
         .post-header {
@@ -158,7 +302,7 @@
 
         .post-author {
             font-weight: 600;
-            color: #4caf50;
+            color: var(--accent-color);
             font-size: 1.1rem;
         }
 
@@ -168,7 +312,7 @@
         }
 
         .post-content {
-            color: #2e7d32;
+            color: var(--text-color);
             line-height: 1.6;
             white-space: pre-wrap;
             word-wrap: break-word;
@@ -188,15 +332,15 @@
         .loading {
             text-align: center;
             padding: 20px;
-            color: #66bb6a;
+            color: var(--primary-color);
         }
 
         .loading-spinner {
             display: inline-block;
             width: 30px;
             height: 30px;
-            border: 3px solid #e8f5e9;
-            border-top-color: #66bb6a;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--primary-color);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -255,10 +399,14 @@
         }
     </style>
 </head>
-<body>
+<body class="green-theme">
     <div class="container">
         <header>
-            <h1>zunda</h1>
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <span class="theme-icon" id="themeIcon">🍂</span>
+                <span>テーマ変更</span>
+            </button>
+            <h1 id="boardTitle"><a href="ml-passion.html" class="heart-link" title="MLについて熱く語る">💚</a> みんなの掲示板</h1>
             <p class="subtitle">思いを共有しよう</p>
         </header>
 
@@ -453,6 +601,47 @@
         // 名前を保存（オプション）
         nameInput.addEventListener('change', () => {
             localStorage.setItem('boardUserName', nameInput.value);
+        });
+
+        // テーマ切り替え機能
+        let currentThemeIndex = 0;
+        const themes = [
+            { name: 'green-theme', icon: '🍂', title: '<a href="ml-passion.html" class="heart-link" title="MLについて熱く語る">💚</a> みんなの掲示板' },
+            { name: 'brown-theme', icon: '🌙', title: '☕ みんなの掲示板' },
+            { name: 'dark-theme', icon: '☀️', title: '✨ みんなの掲示板' }
+        ];
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            const boardTitle = document.getElementById('boardTitle');
+            
+            // 現在のテーマを削除
+            body.classList.remove(themes[currentThemeIndex].name);
+            
+            // 次のテーマに切り替え
+            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+            const nextTheme = themes[currentThemeIndex];
+            
+            body.classList.add(nextTheme.name);
+            themeIcon.textContent = nextTheme.icon;
+            boardTitle.innerHTML = nextTheme.title;
+            localStorage.setItem('boardTheme', nextTheme.name);
+        }
+
+        // ページ読み込み時にテーマを復元
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('boardTheme');
+            if (savedTheme) {
+                const themeIndex = themes.findIndex(t => t.name === savedTheme);
+                if (themeIndex !== -1) {
+                    currentThemeIndex = themeIndex;
+                    document.body.classList.remove('green-theme');
+                    document.body.classList.add(themes[currentThemeIndex].name);
+                    document.getElementById('themeIcon').textContent = themes[currentThemeIndex].icon;
+                    document.getElementById('boardTitle').innerHTML = themes[currentThemeIndex].title;
+                }
+            }
         });
     </script>
 </body>
